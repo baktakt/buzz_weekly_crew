@@ -1,6 +1,12 @@
 extract_articles_task:
   description: >
-    Use the extract_articles_task to get the content of the first 3 articles from the rss feeds in {rss-feeds}
+    Use the extract_articles_task to get the content of the first 3 articles from each feed in the this list: {rss-feeds}
+  expected_output: >
+    A json object containing a number of selected articles
+
+select_articles_task:
+  description: >
+    From the list of articles, select the top 5 most interesting articles. Mix them up in order, with the most interesting article first. 
   expected_output: >
     A json object containing a number of selected articles
 
@@ -12,21 +18,34 @@ format_task:
     1. Start with a title for this week's newsletter that is fun and compelling, and summarises the articles in the newsletter.
     2. Continue with a text that in a few sentences summarizes all the articles.
     3. Then include all the articles in the following format for each article. 
+    4. End with a text thanking the readers for reading, wish them a great weekend and encourage them to read also next week.
 
+    So the end result should have this format:
+
+    ###TITLE FOR THIS WEEKS NEWSLETTER
+    SUMMARY OF THIS WEEKS NEWSLETTER CONTENT
+
+    (fore each article use this format below)
     ## TITLE (rewritten in a more compelling way for readers)
+
+    _PUBLISHED DATE_ (on new line, in italic, format like 16 July, 2024. Replace with the actual date, no need for writing Published date:)
+
     DESCRIPTION (on new line rewritten in a more compelling way for readers)
 
-    _PUBLISHED DATE_ (on new line, in italic. Replace with the actual date, no need for writing Published date:)
-
-    *READ MORE* (on new line link, Read more should me in text and be a clickable link)
+    [Read the story](article-link)
 
     ---
+
+    (End summary text goes here where we thank the readers for reading, wish them a great weekend and encourage them to read also next week.)
+
+    BR,
+    The Buzz News Crew
   expected_output: >
     A markdown document with a compelling title, a brief summary of all articles, followed by the articles formatted as specified.
     
 create_medium_draft_task:
   description: >
     Publish the content in a medium draft post. Call the create_medium_draft_post with these properties title (string), content (string) and tags (list) like this:
-    create_medium_draft_post("title": "The post title", "content": "The post content", "tags": "The tags ")
+    create_medium_draft_post("title": "The post title", "content": "The post content", "tags": "The tags ").
   expected_output: >
     The result from call to create_medium_draft_post

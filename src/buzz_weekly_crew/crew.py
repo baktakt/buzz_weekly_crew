@@ -42,6 +42,15 @@ class BuzzWeeklyCrew():
 		)
 	
 	@agent
+	def editor(self) -> Agent:
+		return Agent(
+			config=self.agents_config['editor'],
+			allow_delegation=False,
+			verbose=True,
+			llm=llm,
+		)
+	
+	@agent
 	def formatter(self) -> Agent:
 		return Agent(
 			config=self.agents_config['formatter'],
@@ -66,6 +75,14 @@ class BuzzWeeklyCrew():
 			config=self.tasks_config['extract_articles_task'],
 			agent=self.news_researcher(),
 			output_file='generated/extracted_articles.json'
+		)
+	
+	@task
+	def select_articles_task(self) -> Task:
+		return Task(
+			config=self.tasks_config['select_articles_task'],
+			agent=self.editor(),
+			output_file='generated/selected_articles.json'
 		)
 	
 	@task

@@ -38,8 +38,6 @@ class BrowserTools:
                 link = article.link,
                 description = article.summary,
                 pub_date = article.published,
-                author = article.author,
-                tags = article.tags,
                 
                 # Converting the article to a JSON string
                 article_json = json.dumps({
@@ -47,8 +45,6 @@ class BrowserTools:
                     'link': link,
                     'description': description,
                     'publish_date': pub_date,
-                    'author': author,
-                    'tags': tags,
                 })
                 
                 # Adding the JSON string to the final list
