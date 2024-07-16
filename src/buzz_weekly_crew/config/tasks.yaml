@@ -1,0 +1,32 @@
+extract_articles_task:
+  description: >
+    Use the extract_articles_task to get the content of the first 3 articles from the rss feeds in {rss-feeds}
+  expected_output: >
+    A json object containing a number of selected articles
+
+format_task:
+  description: >
+    Compile the summaries into a well-formatted text suitable for publishing. The text will be published in the weekly blog called Buzz Weekly. 
+    Your final answer MUST include a formatted document in Markdown with the following format:
+    
+    1. Start with a title for this week's newsletter that is fun and compelling, and summarises the articles in the newsletter.
+    2. Continue with a text that in a few sentences summarizes all the articles.
+    3. Then include all the articles in the following format for each article. 
+
+    ## TITLE (rewritten in a more compelling way for readers)
+    DESCRIPTION (on new line rewritten in a more compelling way for readers)
+
+    _PUBLISHED DATE_ (on new line, in italic. Replace with the actual date, no need for writing Published date:)
+
+    *READ MORE* (on new line link, Read more should me in text and be a clickable link)
+
+    ---
+  expected_output: >
+    A markdown document with a compelling title, a brief summary of all articles, followed by the articles formatted as specified.
+    
+create_medium_draft_task:
+  description: >
+    Publish the content in a medium draft post. Call the create_medium_draft_post with these properties title (string), content (string) and tags (list) like this:
+    create_medium_draft_post("title": "The post title", "content": "The post content", "tags": "The tags ")
+  expected_output: >
+    The result from call to create_medium_draft_post

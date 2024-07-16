@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "buzz_weekly_crew"
+version = "0.1.0"
+description = "Crew that gathers content to the Buzz Weekly blog"
+authors = ["Johan Uddståhl <baktakt@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.10,<=3.13"
+crewai = {extras = ["tools"], version = "^0.36.1"}
+feedparser = "^6.0.11"
+beautifulsoup4 = "^4.12.3"
+linkedin-api = "^2.1.1"
+langchain-groq = "^0.1.6"
+
+[tool.poetry.scripts]
+buzz_weekly_crew = "buzz_weekly_crew.main:run"
+train = "buzz_weekly_crew.main:train"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
