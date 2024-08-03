@@ -1,6 +1,6 @@
-# News Crew
+# Weekly Buzz News Crew
 
-Welcome to the Buzz Weekly Crew project, powered by [crewAI](https://crewai.com).
+Welcome to the Weekly Buzz Crew project, powered by [crewAI](https://crewai.com).
 
 ## Installation
 
@@ -46,9 +46,12 @@ The crew is composed of multiple AI agents, each with unique roles, goals, and t
 
 ## Support
 
+For this specific implementation.
+- DM me on my [LinkedIn profile](https://www.linkedin.com/in/johanuddstahl/)
+- Checkout the Weekly [Buzz Blog](https://medium.com/the-weekly-buzz)
+
 For support, questions, or feedback regarding CrewAI.
 - Visit the [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
 - [Join the Discord](https://discord.com/invite/X4JWnZnxPb)
 - [Chat with the CrewAI docs](https://chatg.pt/DWjSBZn)
 
