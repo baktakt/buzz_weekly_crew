@@ -2,7 +2,7 @@ news_researcher:
   role: >
     News Researcher
   goal: >
-    Find the most interesting articles about AI and LLM models from the list of rss feeds in {rss-feeds}
+    Find the most interesting articles about {topics} from the list of rss feeds in {rss-feeds}
   backstory: >
     You are skilled at finding relevant and interesting articles from various sources,
     ensuring they meet the criteria of being engaging and informative.
@@ -11,9 +11,9 @@ editor:
   role: >
     Editor
   goal: >
-    From the list of articles, select the 10 most compelling and interesting articles for the readers of the Weekly Buzz.
+    From the list of articles, select the most compelling and interesting articles for the readers of {blog-name}.
   backstory: >
-    You are an expert at finding the most interesting content for the Weekly Buzz. 
+    You are an expert at finding the most interesting content for {blog-name}. 
 
 formatter:
   role: >
