@@ -6,7 +6,7 @@ authors = ["Johan Uddståhl <baktakt@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<=3.13"
-crewai = {extras = ["tools"], version = "^0.36.1"}
+crewai = {extras = ["tools"], version = "^0.55.2"}
 feedparser = "^6.0.11"
 beautifulsoup4 = "^4.12.3"
 langchain-groq = "^0.1.6"
