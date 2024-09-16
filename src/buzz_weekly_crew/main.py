@@ -20,9 +20,10 @@ def train():
     """Train the crew for a given number of iterations."""
     try:
         n_iterations = int(sys.argv[1])
-        BuzzWeeklyCrew().crew().train(n_iterations=n_iterations, inputs=get_inputs())
+        filename = sys.argv[2]  # Add this line to get the filename from command-line arguments
+        BuzzWeeklyCrew().crew().train(n_iterations=n_iterations, inputs=get_inputs(), filename=filename)  # Add filename here
     except (IndexError, ValueError):
-        print("Usage: train <number_of_iterations>")
+        print("Usage: train <number_of_iterations> <filename>")  # Update usage message
     except Exception as e:
         print(f"An error occurred while training the crew: {e}")
         sys.exit(1)
