@@ -1,35 +1,20 @@
 import os
 from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
-from langchain_community.llms import Ollama
 from langchain_groq import ChatGroq
 from buzz_weekly_crew.tools.social_tools import SocialTools
 from buzz_weekly_crew.tools.browser_tools import BrowserTools
 from crewai_tools import DallETool
 
+# Use a constant for the LLM configuration
+LLM = ChatGroq(
+    temperature=1.5, 
+    groq_api_key=os.getenv('GROQ_API_KEY'), 
+    model_name=os.getenv('GROQ_MODEL_NAME')
+)
 
-'''
-llm = Ollama(
-    model = os.getenv('OPENAI_MODEL_NAME'),
-    base_url = os.getenv('OPENAI_API_BASE'), temperature=0.2)
-
-'''
-llm = ChatGroq(
-		temperature=1.5, 
-		groq_api_key = os.getenv('GROQ_API_KEY'), 
-		model_name=os.getenv('GROQ_MODEL_NAME')
-	)
-
-dalle_tool = DallETool(model="dall-e-3",
-                       size="1792x1024",
-                       quality="hd",
-                       n=1)
-    
-# Uncomment the following line to use an example of a custom tool
-# from buzz_weekly.tools.custom_tool import MyCustomTool
-
-# Check our tools documentations for more information on how to use them
-# from crewai_tools import SerperDevTool
+# Use a constant for the DALL-E tool configuration
+DALLE_TOOL = DallETool(model="dall-e-3", size="1792x1024", quality="hd", n=1)
 
 @CrewBase
 class BuzzWeeklyCrew():
@@ -37,93 +22,63 @@ class BuzzWeeklyCrew():
 	agents_config = 'config/agents.yaml'
 	tasks_config = 'config/tasks.yaml'
 
-	@agent
-	def news_researcher(self) -> Agent:
+	def _create_agent(self, config_key, tools=None):
+		"""Helper method to create agents with common configuration"""
 		return Agent(
-			config=self.agents_config['news_researcher'],
-			tools=[BrowserTools.get_articles_from_feeds],
+			config=self.agents_config[config_key],
+			tools=tools,
 			allow_delegation=False,
 			verbose=True,
-#			llm=llm,
+			llm=LLM,
 		)
+
+	def _create_task(self, config_key, agent, output_file):
+		"""Helper method to create tasks with common configuration"""
+		return Task(
+			config=self.tasks_config[config_key],
+			agent=agent,
+			output_file=output_file
+		)
+
+	@agent
+	def news_researcher(self) -> Agent:
+		return self._create_agent('news_researcher', [BrowserTools.get_articles_from_feeds])
 	
 	@agent
 	def editor(self) -> Agent:
-		return Agent(
-			config=self.agents_config['editor'],
-			allow_delegation=False,
-			verbose=True,
-#			llm=llm,
-		)
+		return self._create_agent('editor')
 	
 	@agent
 	def formatter(self) -> Agent:
-		return Agent(
-			config=self.agents_config['formatter'],
-			allow_delegation=False,
-			verbose=True,
-#			llm=llm,
-		)
+		return self._create_agent('formatter')
 	
 	@agent
 	def publisher(self) -> Agent:
-		return Agent(
-			config=self.agents_config['publisher'],
-			tools=[SocialTools.create_medium_draft_post],
-			allow_delegation=False,
-			verbose=True,
-#			llm=llm,
-		)
+		return self._create_agent('publisher', [SocialTools.create_medium_draft_post])
 	
 	@agent
 	def image_creator(self) -> Agent:
-		return Agent(
-			config=self.agents_config['image_creator'],
-			tools=[dalle_tool],
-			allow_delegation=False,
-			verbose=True,
-#			llm=llm,
-		)
+		return self._create_agent('image_creator', [DALLE_TOOL])
 
 	@task
 	def extract_articles_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['extract_articles_task'],
-			agent=self.news_researcher(),
-			output_file='generated/extracted_articles.json'
-		)
+		return self._create_task('extract_articles_task', self.news_researcher(), 'generated/extracted_articles.json')
 	
 	@task
 	def select_articles_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['select_articles_task'],
-			agent=self.editor(),
-			output_file='generated/selected_articles.json'
-		)
+		return self._create_task('select_articles_task', self.editor(), 'generated/selected_articles.json')
 	
 	@task
 	def create_image_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['create_image_task'],
-			agent=self.image_creator(),
-			output_file='generated/image-url.txt'
-		)
+		return self._create_task('create_image_task', self.image_creator(), 'generated/image-url.txt')
 	
 	@task
 	def format_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['format_task'],
-			agent=self.formatter(),
-			output_file='generated/final_result.md'
-		)
+		return self._create_task('format_task', self.formatter(), 'generated/final_result.md')
 	
 	@task
 	def create_medium_draft_task(self) -> Task:
-		return Task(
-			config=self.tasks_config['create_medium_draft_task'],
-			agent=self.publisher(),
-			output_file='generated/result_from_medium_create_post.txt'
-		)
+		return self._create_task('create_medium_draft_task', self.publisher(), 'generated/result_from_medium_create_post.txt')
 
 	@crew
 	def crew(self) -> Crew:
