@@ -6,14 +6,15 @@ from buzz_weekly_crew.crew import BuzzWeeklyCrew
 def get_inputs():
     """Get common inputs from environment variables."""
     return {
-        "rss-feeds": os.getenv('RSS_FEEDS'),
-        "number-of-articles-from-each-feed": os.getenv('ARTICLES_PER_FEED'),
-        "number-of-articles-in-blog-post": os.getenv('ARTICLES_IN_BLOG'),
-        "topics": os.getenv('TOPICS'),
-        "blog-name": os.getenv('BLOG_NAME'),
+        "rss-feeds": os.getenv('RSS_FEEDS', ''),
+        "number-of-articles-from-each-feed": os.getenv('ARTICLES_PER_FEED', ''),
+        "number-of-articles-in-blog-post": os.getenv('ARTICLES_IN_BLOG', ''),
+        "topics": os.getenv('TOPICS', ''),
+        "blog-name": os.getenv('BLOG_NAME', ''),
     }
 
 def run():
+    print(get_inputs());
     BuzzWeeklyCrew().crew().kickoff(inputs=get_inputs())
 
 def train():
