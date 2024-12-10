@@ -1,20 +1,25 @@
-[tool.poetry]
+[project]
 name = "buzz_weekly_crew"
 version = "0.1.0"
 description = "Crew that gathers content to the Buzz Weekly blog"
-authors = ["Johan Uddståhl <baktakt@gmail.com>"]
+authors = [
+    { name = "Johan Uddståhl", email = "baktakt@gmail.com" },
+]
+requires-python = ">=3.10,<=3.13"
+dependencies = [
+    "crewai[tools]>=0.55.2",
+    "feedparser>=6.0.11",
+    "beautifulsoup4>=4.12.3",
+    "langchain-groq>=0.1.6",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<=3.13"
-crewai = {extras = ["tools"], version = "^0.55.2"}
-feedparser = "^6.0.11"
-beautifulsoup4 = "^4.12.3"
-langchain-groq = "^0.1.6"
-
-[tool.poetry.scripts]
+[project.scripts]
 buzz_weekly_crew = "buzz_weekly_crew.main:run"
 train = "buzz_weekly_crew.main:train"
+run_crew = "buzz_weekly_crew.main:run"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"

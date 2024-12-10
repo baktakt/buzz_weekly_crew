@@ -8,10 +8,12 @@ from crewai_tools import DallETool
 
 # Use a constant for the LLM configuration
 LLM = ChatGroq(
-    temperature=1.5, 
-    groq_api_key=os.getenv('GROQ_API_KEY'), 
-    model_name=os.getenv('GROQ_MODEL_NAME')
+	model=f"groq/{os.getenv('GROQ_MODEL_NAME', 'llama3-70b-8192')}",
+	temperature=1.5, 
+	groq_api_key=os.getenv('GROQ_API_KEY')
 )
+
+USE_OPENAI = os.getenv('USE_OPENAI', False)
 
 # Use a constant for the DALL-E tool configuration
 DALLE_TOOL = DallETool(model="dall-e-3", size="1792x1024", quality="hd", n=1)
@@ -22,14 +24,14 @@ class BuzzWeeklyCrew():
 	agents_config = 'config/agents.yaml'
 	tasks_config = 'config/tasks.yaml'
 
-	def _create_agent(self, config_key, tools=None):
+	def _create_agent(self, config_key, tools):
 		"""Helper method to create agents with common configuration"""
 		return Agent(
 			config=self.agents_config[config_key],
 			tools=tools,
 			allow_delegation=False,
 			verbose=True,
-			llm=LLM,
+			llm=None if USE_OPENAI else LLM,
 		)
 
 	def _create_task(self, config_key, agent, output_file):
@@ -46,11 +48,11 @@ class BuzzWeeklyCrew():
 	
 	@agent
 	def editor(self) -> Agent:
-		return self._create_agent('editor')
+		return self._create_agent('editor', [])
 	
 	@agent
 	def formatter(self) -> Agent:
-		return self._create_agent('formatter')
+		return self._create_agent('formatter', [])
 	
 	@agent
 	def publisher(self) -> Agent:
