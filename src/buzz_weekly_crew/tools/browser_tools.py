@@ -1,4 +1,4 @@
-from crewai_tools import tool
+from crewai.tools import tool
 import feedparser 
 import requests
 from bs4 import BeautifulSoup

@@ -1,16 +1,15 @@
 import os
-from crewai import Agent, Crew, Process, Task
+from crewai import Agent, Crew, Process, Task, LLM
 from crewai.project import CrewBase, agent, crew, task
-from langchain_groq import ChatGroq
 from buzz_weekly_crew.tools.social_tools import SocialTools
 from buzz_weekly_crew.tools.browser_tools import BrowserTools
 from crewai_tools import DallETool
 
 # Use a constant for the LLM configuration
-LLM = ChatGroq(
+LLM_INSTANCE = LLM(
 	model=f"groq/{os.getenv('GROQ_MODEL_NAME', 'llama3-70b-8192')}",
-	temperature=1.5, 
-	groq_api_key=os.getenv('GROQ_API_KEY')
+	temperature=1.5,
+	api_key=os.getenv('GROQ_API_KEY')
 )
 
 USE_OPENAI = os.getenv('USE_OPENAI', False)
@@ -31,7 +30,7 @@ class BuzzWeeklyCrew():
 			tools=tools,
 			allow_delegation=False,
 			verbose=True,
-			llm=None if USE_OPENAI else LLM,
+			llm=None if USE_OPENAI else LLM_INSTANCE,
 		)
 
 	def _create_task(self, config_key, agent, output_file):
