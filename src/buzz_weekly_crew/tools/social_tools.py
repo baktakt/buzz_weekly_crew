@@ -1,7 +1,7 @@
 import os
 import json
 import requests
-from crewai_tools import tool
+from crewai.tools import tool
 
 
 class SocialTools:
